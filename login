@@ -2,7 +2,20 @@
 {% load static %}
 {% block content %}
 
-
+<div class="leaves">
+    <span>🍃</span>
+    <span>🍂</span>
+    <span>🍁</span>
+    <span>🍃</span>
+    <span>🍂</span>
+    <span>🍁</span>
+    <span>🍃</span>
+    <span>🍂</span>
+    
+</div>
+<div class="background-tree">
+    <img src="{% static 'tree/tree.png' %}" alt="Tree">
+</div>
 <div class="form-container">
   <h2 style="text-align: center;">Login</h2>
   <form method="POST">
