@@ -1,47 +1,54 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
 <div class="form-container">
 
-    <h2>🌳 Tree Page</h2>
+    <h3>🌳 Your Tree</h3>
 
     <div style="text-align:center; margin: 20px 0;">
-        <img src="/static/tree/1.png" 
-             alt="Tree"
-             style="width:140px;">
+        <img src="{% static 'tree/' %}{{ stage }}.png" 
+             alt="Tree Stage"
+             style="width:160px;">
     </div>
 
-    <p>Level 1</p>
-    <p>Streak: 3 days</p>
-
+    <p>Level {{ tree.level }}</p>
+    <p>🔥 Streak: {{ request.user.userprofile.streak }} days</p>
     <div class="xp-bar">
-        <div class="xp-fill" style="width: 40%;"></div>
+        <div class="xp-fill" style="width: {{ progress }}%;"></div>
     </div>
 
-    <p>40 / 100 XP</p>
+    <p>{{ tree.points }} / {{ next_level_xp }} XP</p>
 
     <hr>
     <br>
+ 
+    <a href="{% url 'test_add_points' %}" class="btn-save">
+    +50 XP Test
+</a>
 
-    <a href="#" class="btn-save">
-        +50 XP Test
-    </a>
+<h3>Daily Tasks</h3>
 
-    <h3>Daily Tasks</h3>
+<ul>
+    {% for task in tasks %}
+        <li>
+            {% if task.completed %}
+                <del>{{ task.title }}</del>
+            {% else %}
+                {{ task.title }}
+            {% endif %}
+        </li>
+    {% empty %}
+        <li>No tasks yet — add one today.</li>
+    {% endfor %}
+</ul>
 
-    <ul>
-        <li>✅ Finish homework</li>
-        <li>✅ Drink water</li>
-        <li>⬜ Go for a walk</li>
-    </ul>
-
-    <div class="btn-save" style="background-color:#428d40; cursor:auto;">
-        <blockquote>
-            “Small progress each day adds up.”
-        </blockquote>
-    </div>
-
+<div class="btn-save" style="  background-color: #428d40; cursor:auto;">
+    <blockquote>
+    “{{ daily_quote }}”
+    </blockquote>
+</div>
 </div>
 
 {% endblock %}
