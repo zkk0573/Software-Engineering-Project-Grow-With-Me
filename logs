@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="form-container">
+    <h2>Logs</h2>
+
+    <a href="{% url 'add_log' %}" class="btn-save">+ Add Log</a>
+<br>
+<br>
+    <hr>
+
+    {% for log in logs %}
+    <a href="{% url 'view_log' log.id %}">
+        <div class="logwrapper">
+            <div class="task-info">
+                <strong>Mood: {{ log.mood }}/5</strong>
+                <strong>{{ log.title }}</strong>
+                <small class="task-date">{{ log.created_at|date:"d M Y" }}</small>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropdown-toggle">⋮</button>
+
+                <div class="dropdown-menu">
+                    <form method="POST" action="{% url 'delete_log' log.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </a>
+    {% empty %}
+        <p>No logs yet.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
