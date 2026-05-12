@@ -1,0 +1,44 @@
+{% load static %}
+
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'css/theme.css' %}" />
+        <title>
+            {% block title %}
+                Grow With Me
+            {% endblock title %}
+        </title>
+    </head>
+
+    <body>
+      <div id="overlay"></div>
+      <header class="header">
+        {% if request.path != '/login/' and request.path != '/register/' %}
+        <button id="menu-btn" class="menu-icon">&#9776;</button>
+        <div id="sidebar" class="sidebar">
+          <button id="close-sidebar" class="close-button">×</button>
+          <a href="{% url 'index' %}">Home</a>
+          <a href="{% url 'tasks' %}">Tasks</a>
+          <a href="{% url 'logs' %}">Logs</a>
+          <a href="{% url 'settings' %}">Settings</a>
+          <a href="{% url 'logout' %}">Logout</a>
+        </div>
+        {% endif %}
+        <div style="width: 100%;">
+          <h1 style="text-align: center;">Grow With Me</h1>
+        </div>
+
+      </header>
+
+    <div class="page-wrapper">
+      {% block content %}
+      {% endblock %}
+    </div>
+
+    <footer style="text-align: center;" class="footer">
+      <h2>&copy; 2026 Zach Klein</h2>
+    </footer>
+  </div>
+</body>
+
+</html>
