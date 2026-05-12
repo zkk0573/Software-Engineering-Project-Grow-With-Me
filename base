@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="{% static 'css/theme.css' %}" />
         <title>
             {% block title %}
-                Grow With Me
+                Grow With Me 
             {% endblock title %}
         </title>
     </head>
