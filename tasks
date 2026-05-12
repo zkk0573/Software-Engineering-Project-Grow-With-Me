@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="form-container">
+    <h2>Tasks</h2>
+
+    <a href="{% url 'add_task' %}" class="btn-save">+ Add Daily Task</a>
+<br>
+<br>
+    <hr>
+
+
+{% if all_completed %}
+
+<div class="form-container" style="text-align:center;">
+        <h2>🎉 All tasks completed!</h2>
+        <p>Great job — come back tomorrow.</p>
+    </div>
+
+{% else %}
+    <div class="countdown-box">
+    <h3>Time Left</h3>
+    <p id="countdown">Loading...</p>
+</div>
+    {% for task in tasks %}
+    <div class="taskwrapper {% if task.completed %}task-completed{% endif %}">
+
+        <form method="POST" action="{% url 'complete_task' task.id %}">
+            {% csrf_token %}
+            <input type="checkbox" onchange="this.form.submit()" {% if task.completed %}checked{% endif %}>
+        </form>
+
+        <div class="task-info">
+            <span>
+                {% if task.completed %}
+                    <del>{{ task.title }}</del>
+                {% else %}
+                    {{ task.title }}
+                {% endif %}
+            </span>
+
+            <small class="task-date">
+                {{ task.created_at|date:"d M Y" }}
+            </small>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropdown-toggle">⋮</button>
+
+            <div class="dropdown-menu">
+                <form method="POST" action="{% url 'delete_task' task.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    {% empty %}
+        <p>No tasks yet.</p>
+    {% endfor %}
+
+{% endif %}
+</div>
+
+{% endblock %}
+{% block scripts %}
+{{ block.super }}
+
+<script>
+console.log("Countdown loaded");
+
+function updateCountdown() {
+    const now = new Date();
+    const midnight = new Date();
+    midnight.setHours(24, 0, 0, 0);
+
+    const diff = midnight - now;
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const el = document.getElementById("countdown");
+
+    if (el) {
+        el.innerText = `${hours}h ${minutes}m ${seconds}s`;
+    }
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+{% endblock %}
