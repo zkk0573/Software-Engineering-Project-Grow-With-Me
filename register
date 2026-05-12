@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" crossorigin="anonymous">
+
+<div style="margin-top:20px;" class="form-container">
+    <h2 style="text-align:center; padding:10px;">Register Account</h2>
+
+    <form method="POST" style="margin-left:30px;">
+        {% csrf_token %}
+
+        {{form.username}}
+        {{form.email}}
+        {{form.password1}}
+        {{form.password2}}
+
+        <div class="strength-bar">
+            <div class="strength-fill" id="strengthFill"></div>
+        </div>
+        <div class="strength-text" id="strengthText"></div>
+
+        <div class="password-requirements">
+            <p id="contain">Password must contain:</p>
+            <ul>
+                <li id="length">At least 8 characters</li>
+                <li id="capital">One uppercase letter</li>
+                <li id="number">One number</li>
+                <li id="symbol">One special character</li>
+            </ul>
+             {{form.errors}}
+        </div>
+
+        <button class="btn-save" type="submit" style="margin-left:70px;">Register Account</button>
+    </form>
+
+    
+
+    <div class="mt-4">
+        Already have an account? <a href="{% url 'login' %}" class="ml-2">Login</a>
+    </div>
+</div>
+
+<script>
+
+var form_fields = document.getElementsByTagName('input')
+
+form_fields[1].placeholder='Username';
+form_fields[2].placeholder='Email';
+form_fields[3].placeholder='Enter password';
+form_fields[4].placeholder='Re-enter Password';
+
+for (var field in form_fields){	
+    form_fields[field].className += ' form-control'
+}
+
+var passwordInput = form_fields[3];
+
+passwordInput.onkeyup = function() {
+
+    var password = passwordInput.value;
+
+    var strengthFill = document.getElementById("strengthFill");
+    var strengthText = document.getElementById("strengthText");
+
+    var lengthReq = document.getElementById("length");
+    var capitalReq = document.getElementById("capital");
+    var numberReq = document.getElementById("number");
+    var symbolReq = document.getElementById("symbol");
+    var containReq = document.getElementById("contain");
+
+    var strength = 0;
+    containReq.style.display = "block";
+    if (password.length >= 8){
+        lengthReq.style.display = "none";
+        strength += 1;
+    } else {
+        lengthReq.style.display = "list-item";
+    }
+
+    if (password.match(/[A-Z]/)){
+        capitalReq.style.display = "none";
+        strength += 1;
+    } else {
+        capitalReq.style.display = "list-item";
+    }
+
+    if (password.match(/[0-9]/)){
+        numberReq.style.display = "none";
+        strength += 1;
+    } else {
+        numberReq.style.display = "list-item";
+    }
+
+    if (password.match(/[^A-Za-z0-9]/)){
+        symbolReq.style.display = "none";
+        strength += 1;
+    } else {
+        symbolReq.style.display = "list-item";
+    }
+
+    if (strength <= 1){
+        strengthFill.style.width = "33%";
+        strengthFill.style.backgroundColor = "red";
+        strengthText.innerHTML = "Weak";
+    }
+    else if (strength <= 3){
+        strengthFill.style.width = "66%";
+        strengthFill.style.backgroundColor = "orange";
+        strengthText.innerHTML = "Medium";
+    }
+    else{
+        strengthFill.style.width = "100%";
+        strengthFill.style.backgroundColor = "green";
+        strengthText.innerHTML = "Strong";
+        containReq.style.display = "none";
+    }
+
+}
+
+</script>
+
+{% endblock %}
