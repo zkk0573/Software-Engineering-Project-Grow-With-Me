@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="{% static 'css/theme.css' %}" />
         <title>
             {% block title %}
-                Grow With Me 
+                Grow With Me
             {% endblock title %}
         </title>
     </head>
@@ -27,7 +27,11 @@
         <div style="width: 100%;">
           <h1 style="text-align: center;">Grow With Me</h1>
         </div>
-
+        {% if request.path != '/login/' and request.path != '/register/' %}
+        <a href="{% url 'settings' %}">
+            <img src="{{ user.userprofile.profile_pic.url }}" class="profile-pic">
+        </a> 
+        {% endif %}
       </header>
 
     <div class="page-wrapper">
@@ -39,6 +43,49 @@
       <h2>&copy; 2026 Zach Klein</h2>
     </footer>
   </div>
+  {% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuBtn = document.getElementById("menu-btn");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    const closeBtn = document.getElementById("close-sidebar");
+
+    function openSidebar() {
+        if (!sidebar) return;
+        sidebar.classList.add("open");
+        if (overlay) overlay.style.display = "block";
+    }
+
+    function closeSidebar() {
+        if (!sidebar) return;
+        sidebar.classList.remove("open");
+        if (overlay) overlay.style.display = "none";
+    }
+
+    if (menuBtn) {
+        menuBtn.addEventListener("click", function () {
+            openSidebar();
+        });
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener("click", function () {
+            closeSidebar();
+        });
+    }
+
+    if (overlay) {
+        overlay.addEventListener("click", function () {
+            closeSidebar();
+        });
+    }
+
+    console.log("Sidebar JS loaded");
+});
+</script>
+  {% endblock %}
 </body>
 
 </html>
