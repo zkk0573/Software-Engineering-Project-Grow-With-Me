@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="form-container" style="margin-top:20px;">
+    <h1>Profile</h1>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+     <p><strong>Profile Picture:</strong><a href="{% url 'upload_profile_pic' %}"><img src="{{ user.userprofile.profile_pic.url }}" class="profile-pic1"></a>
+    <br>
+    <br>
+    <br>
+    <a href="{% url 'upload_profile_pic' %}" class="btn-save">Change Picture</a>
+
+</div>
+{% endblock %}
